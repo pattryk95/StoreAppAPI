@@ -1,8 +1,15 @@
+using Microsoft.EntityFrameworkCore;
+using StoreAppAPI.Entities;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
 builder.Services.AddControllers();
+
+builder.Services.AddDbContext<StoreAppContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("StoreAppConnectionString"))
+);
 
 //Invoke Swager in services configuration (Necessary services do make API Docs)
 builder.Services.AddSwaggerGen();
