@@ -33,15 +33,19 @@ namespace StoreAppAPI.Entities
                         .IsRequired();
                     eb.Property(p => p.QuantityInStock)
                         .IsRequired();
-
-
-
                 });
 
-            modelBuilder.Entity<Brand>()
-                .Property(b => b.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+            modelBuilder.Entity<Brand>(
+                eb =>
+                {
+                    eb.Property(b => b.Name)
+                        .IsRequired()
+                        .HasMaxLength(50);
+
+                    eb.HasMany(b => b.Products)
+                    .WithOne(p => p.Brand)
+                    .HasForeignKey(p => p.BrandId);
+                });
 
             modelBuilder.Entity<Category>()
                 .Property(b => b.Name)
