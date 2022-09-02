@@ -30,7 +30,8 @@ namespace StoreAppAPI.Entities
                     eb.Property(p => p.Description)
                         .HasMaxLength(255);
                     eb.Property(p => p.Price)
-                        .IsRequired();
+                        .IsRequired()
+                        .HasColumnType("money");
                     eb.Property(p => p.QuantityInStock)
                         .IsRequired();
                 });
@@ -47,10 +48,18 @@ namespace StoreAppAPI.Entities
                     .HasForeignKey(p => p.BrandId);
                 });
 
-            modelBuilder.Entity<Category>()
-                .Property(b => b.Name)
-                .IsRequired()
-                .HasMaxLength(50);
+            modelBuilder.Entity<Category>(
+                eb =>
+                {
+                    eb.Property(b => b.Name)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                    eb.HasMany(c => c.Products)
+                    .WithOne(p => p.Category)
+                    .HasForeignKey(p => p.CategoryId);
+                });
+
         }
     }
 }
