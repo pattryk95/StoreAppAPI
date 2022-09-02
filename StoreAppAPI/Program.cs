@@ -1,5 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using StoreAppAPI.Entities;
+using StoreAppAPI.Services;
+using StoreAppAPI.Services.Interfaces;
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +14,10 @@ builder.Services.AddDbContext<StoreAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreAppConnectionString"))
 );
 builder.Services.AddScoped<StoreAppSeeder>();
+builder.Services.AddScoped<IProductService, ProductService>();
+
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+
 
 
 //Invoke Swager in services configuration (Necessary services do make API Docs)
