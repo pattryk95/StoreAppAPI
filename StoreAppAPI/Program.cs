@@ -10,6 +10,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("FrontEndClient", policyBuilder =>
+    
+        policyBuilder.AllowAnyMethod()
+                     .AllowAnyHeader()
+                     .WithOrigins(builder.Configuration["AllowedOrigins"])
+    );
+});
+
 builder.Services.AddDbContext<StoreAppContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("StoreAppConnectionString"))
 );
@@ -25,7 +35,9 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
+
 // Configure the HTTP request pipeline.
+app.UseCors("FrontEndClient");
 using var scope = app.Services.CreateScope();
 var seeder = scope.ServiceProvider.GetRequiredService<StoreAppSeeder>();
 

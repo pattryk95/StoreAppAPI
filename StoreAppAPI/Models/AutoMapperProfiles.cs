@@ -14,7 +14,7 @@ namespace StoreAppAPI.Models
         {
             CreateMap<Product, ProductDTO>()
                 .ForMember(m=>m.Brand, c=>c.MapFrom(s => s.Brand.Name))
-                .ForMember(m=>m.Category, c=>c.MapFrom(s => s.Category.Namex));
+                .ForMember(m=>m.Category, c=>c.MapFrom(s => s.Category.Name));
         }
     }
 }
