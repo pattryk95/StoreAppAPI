@@ -35,7 +35,11 @@ namespace StoreAppAPI.Services
 
         public async Task<ProductDTO> GetProductById(int id)
         {
-            var product = await _dbContext.Products.FirstOrDefaultAsync(p => p.Id == id);
+            var product = await _dbContext.Products
+                .Include(p=> p.Brand)
+                .Include(p=> p.Category)
+                .FirstOrDefaultAsync(p => p.Id == id);
+
             if (product is null)
             {
                 return null;
